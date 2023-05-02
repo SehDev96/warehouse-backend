@@ -16,6 +16,8 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+./docker/database-data
+
 # Package Files #
 *.jar
 *.war
