@@ -1,11 +1,13 @@
 package com.backend.warehousebackend.config;
 
+import com.backend.warehousebackend.constant.Role;
 import com.backend.warehousebackend.filter.AppAuthenticationFilter;
 import com.backend.warehousebackend.filter.AppAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -49,8 +51,8 @@ public class SecurityConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOriginPatterns(
-                        "http://localhost:3000",
-                        "http://localhost:3000/admin/login");
+                        "http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
                 WebMvcConfigurer.super.addCorsMappings(registry);
             }
         };
@@ -64,7 +66,8 @@ public class SecurityConfiguration {
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-
+        //http.authorizeHttpRequests().requestMatchers("/app/auth/**").permitAll();
+        //http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/app/product/**").hasAuthority(Role.ADMIN.name());
         http.authenticationManager(authenticationManager);
         http.addFilterBefore(new AppAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilter(new AppAuthenticationFilter(authenticationManager));
