@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS app_product
   sku varchar(255) NOT NULL,
   description varchar(255),
   quantity int,
-  price double precision
+  price double precision,
+  date_created TIMESTAMP
 );

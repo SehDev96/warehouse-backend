@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class AppAuthorizationFilter extends OncePerRequestFilter {
@@ -70,6 +71,8 @@ public class AppAuthorizationFilter extends OncePerRequestFilter {
                     response.setHeader("error",exception.getMessage());
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.setContentType("application/json");
+
+                    System.out.println(Arrays.toString(exception.getStackTrace()));
 
                     new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponseModel(
                             HttpStatus.FORBIDDEN.value(),

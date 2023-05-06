@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
@@ -29,6 +30,9 @@ public class AppProduct {
 
     @Column
     private double price;
+
+    @Column(name = "date_created")
+    private Timestamp dateCreated = new Timestamp(System.currentTimeMillis());
 
     public void setSku(int i) {
         this.sku = "PRDSKU"+i;

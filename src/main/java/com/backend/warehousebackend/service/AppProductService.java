@@ -9,6 +9,8 @@ public interface AppProductService {
 
     List<AppProduct> getAllProducts();
 
+    List<AppProduct> getAllProductsByPagination(String q,int pageIndex,int pageSize,String sortBy, String sortDirection);
+
     AppProduct getProductByid(UUID id);
 
     AppProduct getProductByName(String name);
@@ -18,6 +20,8 @@ public interface AppProductService {
     AppProduct updateProduct(AppProduct appProduct);
 
     List<AppProduct> searchProduct(String key);
+
+    int searchProductCount(String key);
 
     int getNumberOfProducts();
 }

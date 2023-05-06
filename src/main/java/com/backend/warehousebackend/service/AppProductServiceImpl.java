@@ -3,6 +3,10 @@ package com.backend.warehousebackend.service;
 import com.backend.warehousebackend.entity.AppProduct;
 import com.backend.warehousebackend.repository.AppProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,30 @@ public class AppProductServiceImpl implements AppProductService{
     @Override
     public List<AppProduct> getAllProducts() {
         return appProductRepository.findAll();
+    }
+
+    @Override
+    public List<AppProduct> getAllProductsByPagination(String q,
+                                                       int pageIndex,
+                                                       int pageSize,
+                                                       String sortBy,
+                                                       String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageIndex, pageSize, sort);
+
+        Page<AppProduct> appProductPage = null;
+
+        if (q == null) {
+            appProductPage = appProductRepository.findAll(pageable);
+        } else {
+            appProductPage = appProductRepository.findAllByNameContainingIgnoreCase(q, pageable);
+        }
+
+        assert appProductPage != null;
+        return appProductPage.getContent();
     }
 
     @Override
@@ -47,5 +75,10 @@ public class AppProductServiceImpl implements AppProductService{
     @Override
     public List<AppProduct> searchProduct(String key) {
         return appProductRepository.searchProducts(key);
+    }
+
+    @Override
+    public int searchProductCount(String key) {
+        return appProductRepository.searchProductsCount(key).orElse(null);
     }
 }

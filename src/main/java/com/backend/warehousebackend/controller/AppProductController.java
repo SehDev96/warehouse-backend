@@ -91,7 +91,7 @@ public class AppProductController {
 
     @GetMapping("/allproducts")
     public ResponseEntity<?> getAllProducts() {
-        List<AppProduct> appProductList = appProductService.getAllProducts();
+        List<AppProduct> appProductList = new ArrayList<>(appProductService.getAllProducts());
         //appProductList.sort(Comparator.comparing(AppProduct::getSku));
 
         appProductList.sort(new Comparator<AppProduct>() {
@@ -106,9 +106,6 @@ public class AppProductController {
             }
         });
 
-        for (AppProduct product : appProductList) {
-            System.out.println(product.getSku());
-        }
         return new ResponseEntity<>(new ResponseModel(
                 HttpStatus.OK.value(),
                 "Successfully retrieved all products",
@@ -116,9 +113,55 @@ public class AppProductController {
         ), HttpStatus.OK);
     }
 
+    @GetMapping("/all/pagination")
+    public ResponseEntity<?> getAllProjects(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "pageIndex",defaultValue = "0",required = false) int pageIndex,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "dateCreated", required = false) String sortBy,
+            @RequestParam(value = "sortDirection", defaultValue = "ASC", required = false) String sortDirection
+    ) {
+        List<AppProduct> appProductList = new ArrayList<>(appProductService.getAllProductsByPagination(q, pageIndex, pageSize, sortBy, sortDirection));
+
+        if (sortBy.equalsIgnoreCase("sku")) {
+            appProductList.sort(new Comparator<AppProduct>() {
+                @Override
+                public int compare(AppProduct o1, AppProduct o2) {
+                    String[] o1String = o1.getSku().split("PRDSKU");
+                    String[] o2String = o2.getSku().split("PRDSKU");
+
+                    int num1 = Integer.parseInt(o1String[1]);
+                    int num2 = Integer.parseInt(o2String[1]);
+                    return Integer.compare(num1, num2);
+                }
+            });
+        }
+
+        Map<String, Object> response = new HashMap<>();
+
+        int totalSize = 0;
+        if(q == null || q.isEmpty() || q.isBlank()){
+            totalSize = appProductService.getNumberOfProducts();
+        } else {
+            response.put("query",q);
+            totalSize = appProductService.searchProductCount(q);
+
+        }
+
+        response.put("total_size", totalSize);
+        response.put("data", appProductList);
+
+
+        return new ResponseEntity<>(new ResponseModel(
+                HttpStatus.OK.value(),
+                "Successfully retrieved all the projects",
+                response
+        ), HttpStatus.OK);
+    }
+
 
     @PutMapping("/updateproduct/{product_id}")
-    public ResponseEntity<?> editProduct(@PathVariable String product_id, @RequestBody Map<String,String> productField) {
+    public ResponseEntity<?> editProduct(@PathVariable String product_id, @RequestBody Map<String, String> productField) {
         AppProduct appProduct = appProductService.getProductByid(UUID.fromString(product_id));
         appProduct.setPrice(Double.parseDouble(productField.get("price")));
         appProduct.setQuantity(Integer.parseInt(productField.get("quantity")));
@@ -133,13 +176,13 @@ public class AppProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchProduct(@RequestParam (required = false) String key){
+    public ResponseEntity<?> searchProduct(@RequestParam(required = false) String key) {
         List<AppProduct> appProductList = appProductService.searchProduct(key);
         return new ResponseEntity<>(new ResponseModel(
                 HttpStatus.OK.value(),
                 "Product list successfully retrieved",
                 appProductList
-        ),HttpStatus.OK);
+        ), HttpStatus.OK);
     }
 
 }
