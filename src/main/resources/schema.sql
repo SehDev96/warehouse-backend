@@ -16,3 +16,15 @@ CREATE TABLE IF NOT EXISTS app_product
   price double precision,
   date_created TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS app_warehouse
+(
+    id uuid NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    code varchar(255) NOT NULL UNIQUE,
+    address varchar(255),
+    state varchar(255) NOT NULL,
+    city varchar(255) NOT NULL,
+    description varchar(255),
+    date_created TIMESTAMP
+);
