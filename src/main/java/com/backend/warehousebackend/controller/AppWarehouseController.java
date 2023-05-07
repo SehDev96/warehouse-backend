@@ -4,6 +4,7 @@ import com.backend.warehousebackend.entity.AppWarehouse;
 import com.backend.warehousebackend.model.ErrorResponseModel;
 import com.backend.warehousebackend.model.ResponseModel;
 import com.backend.warehousebackend.service.AppWarehouseService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,5 +70,15 @@ public class AppWarehouseController {
                     "Warehouse details not found"
             ), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/codelist")
+    public ResponseEntity<?> getWarehouseCodes() {
+        List<String> codeList = appWarehouseService.getAllWarehouseCodes();
+        return new ResponseEntity<>(new ResponseModel(
+                HttpStatus.OK.value(),
+                "Retrieved warehouse code list",
+                codeList
+        ), HttpStatus.OK);
     }
 }

@@ -15,4 +15,7 @@ public interface AppWarehouseRepository extends JpaRepository<AppWarehouse, UUID
 
     @Query(value = "select * from app_warehouse order by date_created",nativeQuery = true)
     List<AppWarehouse> findAllOrderByDateCreated();
+
+    @Query(value = "select code from app_warehouse order by code",nativeQuery = true)
+    List<String> findAllCodes();
 }

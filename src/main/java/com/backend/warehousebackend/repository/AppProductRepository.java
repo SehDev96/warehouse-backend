@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,6 +15,8 @@ import java.util.UUID;
 public interface AppProductRepository extends JpaRepository<AppProduct, UUID> {
 
     Optional<AppProduct> findAppProductByName(String name);
+
+    Optional<AppProduct> findAppProductBySku(String sku);
 
     @Query(value = "select count(*) from app_product", nativeQuery = true)
     Optional<Integer> getNumberOfProducts();

@@ -28,3 +28,17 @@ CREATE TABLE IF NOT EXISTS app_warehouse
     description varchar(255),
     date_created TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS app_warehouse
+(
+    id uuid NOT NULL PRIMARY KEY,
+    product_id uuid NOT NULL,
+    reference varchar(255) UNIQUE NOT NULL,
+    quantity int,
+    date_received varchar(255) NOT NULL,
+    warehouse_id UUID NOT NULL,
+    remarks varchar(255),
+    date_created TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES app_product(id),
+    FOREIGN KEY (warehouse_id) REFERENCES app_warehouse(id)
+);

@@ -15,6 +15,8 @@ public interface AppProductService {
 
     AppProduct getProductByName(String name);
 
+    AppProduct getProductBySku(String sku);
+
     AppProduct addProduct(AppProduct appProduct);
 
     AppProduct updateProduct(AppProduct appProduct);

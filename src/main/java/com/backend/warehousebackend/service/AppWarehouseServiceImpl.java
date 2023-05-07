@@ -45,4 +45,9 @@ public class AppWarehouseServiceImpl implements AppWarehouseService{
     public List<AppWarehouse> getAllWarehouseOrderByDateCreated() {
         return appWarehouseRepository.findAllOrderByDateCreated();
     }
+
+    @Override
+    public List<String> getAllWarehouseCodes() {
+        return appWarehouseRepository.findAllCodes();
+    }
 }

@@ -19,4 +19,6 @@ public interface AppWarehouseService {
 
     List<AppWarehouse> getAllWarehouseOrderByDateCreated();
 
+    List<String> getAllWarehouseCodes();
+
 }

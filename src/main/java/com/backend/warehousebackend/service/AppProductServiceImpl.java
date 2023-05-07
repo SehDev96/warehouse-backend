@@ -58,6 +58,11 @@ public class AppProductServiceImpl implements AppProductService{
     }
 
     @Override
+    public AppProduct getProductBySku(String sku) {
+        return appProductRepository.findAppProductBySku(sku).orElse(null);
+    }
+
+    @Override
     public int getNumberOfProducts() {
         return appProductRepository.getNumberOfProducts().orElse(null);
     }
