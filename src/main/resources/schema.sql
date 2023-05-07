@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS app_warehouse
     date_created TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS app_warehouse
+CREATE TABLE IF NOT EXISTS app_inbound_transaction
 (
     id uuid NOT NULL PRIMARY KEY,
     product_id uuid NOT NULL,
@@ -42,3 +42,26 @@ CREATE TABLE IF NOT EXISTS app_warehouse
     FOREIGN KEY (product_id) REFERENCES app_product(id),
     FOREIGN KEY (warehouse_id) REFERENCES app_warehouse(id)
 );
+
+CREATE TABLE IF NOT EXISTS app_destination
+(
+    id uuid NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    date_created TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS app_outbound_transaction
+(
+    id uuid NOT NULL PRIMARY KEY,
+    product_id uuid NOT NULL,
+    reference varchar(255) UNIQUE NOT NULL,
+    quantity int,
+    date_shipped varchar(255) NOT NULL,
+    destination_id UUID NOT NULL,
+    remarks varchar(255),
+    date_created TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES app_product(id),
+    FOREIGN KEY (destination_id) REFERENCES app_destination(id)
+);
+
+
