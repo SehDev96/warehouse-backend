@@ -29,7 +29,8 @@ public class AppAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        if(request.getServletPath().equals("/app/authenticate")){
+        System.out.println(request.getServletPath());
+        if(request.getServletPath().equals("/app/authenticate") || request.getServletPath().equals("/app/auth/refresh-token")){
             filterChain.doFilter(request,response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");
@@ -56,12 +57,12 @@ public class AppAuthorizationFilter extends OncePerRequestFilter {
                 } catch (TokenExpiredException jwtException){
                     System.out.println("Error loggin in: " + jwtException.getMessage());
                     response.setHeader("error",jwtException.getMessage());
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
 
 
                     new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponseModel(
-                            HttpStatus.FORBIDDEN.value(),
+                            HttpStatus.UNAUTHORIZED.value(),
                             "Jwt Token has expired.",
                             authorizationHeader.substring("Bearer ".length())
                     ));
@@ -69,13 +70,13 @@ public class AppAuthorizationFilter extends OncePerRequestFilter {
 
                 } catch (Exception exception){
                     response.setHeader("error",exception.getMessage());
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
 
                     System.out.println(Arrays.toString(exception.getStackTrace()));
 
                     new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponseModel(
-                            HttpStatus.FORBIDDEN.value(),
+                            HttpStatus.UNAUTHORIZED.value(),
                             "Error Authentication User",
                             authorizationHeader.substring("Bearer ".length())
                     ));

@@ -25,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true,jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
     @Autowired
@@ -60,14 +60,20 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManager authenticationManager = authenticationManager(http,passwordEncoder(),userDetailsService);
+        AuthenticationManager authenticationManager = authenticationManager(http, passwordEncoder(), userDetailsService);
 
         http.csrf().disable();
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //http.authorizeHttpRequests().requestMatchers("/app/auth/**").permitAll();
-        //http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/app/product/**").hasAuthority(Role.ADMIN.name());
+        http.authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/app/product/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name())
+                        .requestMatchers("/app/warehouse/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name())
+                        .requestMatchers("/app/transaction/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name(),Role.OPERATOR.name())
+                        .requestMatchers("/app/auth/**").permitAll()
+                        .anyRequest().authenticated()
+                );
+
         http.authenticationManager(authenticationManager);
         http.addFilterBefore(new AppAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilter(new AppAuthenticationFilter(authenticationManager));
