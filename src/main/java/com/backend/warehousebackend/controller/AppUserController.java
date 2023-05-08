@@ -43,4 +43,14 @@ public class AppUserController {
         ),HttpStatus.OK);
     }
 
+    @GetMapping("/manager/list")
+    public ResponseEntity<?> getUserListManagerRole(){
+        List<AppUser> appUserList = appUserService.getAllUsersManagerRole();
+        return new ResponseEntity<>(new ResponseModel(
+                HttpStatus.OK.value(),
+                "Successfully retrieved users",
+                appUserList
+        ),HttpStatus.OK);
+    }
+
 }

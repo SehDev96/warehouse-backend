@@ -14,4 +14,7 @@ public interface AppUserRepository extends JpaRepository<AppUser,UUID> {
     @Query(value = "select * from app_user order by role",nativeQuery = true)
     List<AppUser> findAllOrderByRole();
 
+    @Query(value = "select * from app_user where role != 'ADMIN' order by role",nativeQuery = true)
+    List<AppUser> findAllOrderByRoleManager();
+
 }

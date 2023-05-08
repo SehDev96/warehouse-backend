@@ -27,4 +27,9 @@ public class AppUserServiceImpl implements AppUserService {
     public List<AppUser> getAllUsersAdminRole() {
         return appUserRepository.findAllOrderByRole();
     }
+
+    @Override
+    public List<AppUser> getAllUsersManagerRole() {
+        return appUserRepository.findAllOrderByRoleManager();
+    }
 }

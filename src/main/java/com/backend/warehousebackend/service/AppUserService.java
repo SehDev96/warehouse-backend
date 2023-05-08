@@ -11,4 +11,7 @@ public interface AppUserService {
     AppUser insertUser(AppUser appUser);
 
     List<AppUser> getAllUsersAdminRole();
+
+    List<AppUser> getAllUsersManagerRole();
+
 }
