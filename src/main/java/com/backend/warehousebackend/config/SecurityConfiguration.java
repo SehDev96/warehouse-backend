@@ -67,12 +67,13 @@ public class SecurityConfiguration {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/app/product/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name())
-                        .requestMatchers("/app/warehouse/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name())
-                        .requestMatchers("/app/transaction/**").hasAnyAuthority(Role.ADMIN.name(),Role.MANAGER.name(),Role.OPERATOR.name())
-                        .requestMatchers("/app/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+                .requestMatchers(HttpMethod.GET, "/app/warehouse/codelist").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name(), Role.OPERATOR.name())
+                .requestMatchers("/app/product/**").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
+                .requestMatchers("/app/warehouse/**").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
+                .requestMatchers("/app/transaction/**").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name(), Role.OPERATOR.name())
+                .requestMatchers("/app/auth/**").permitAll()
+                .anyRequest().authenticated()
+        );
 
         http.authenticationManager(authenticationManager);
         http.addFilterBefore(new AppAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

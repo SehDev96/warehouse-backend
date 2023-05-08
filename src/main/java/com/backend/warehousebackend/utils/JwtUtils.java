@@ -20,7 +20,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getUsername())
 //                .withExpiresAt(new Date(System.currentTimeMillis()+ 2* 60* 10000))
-                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 10000))
                 .withIssuer("ProjectApp")
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);

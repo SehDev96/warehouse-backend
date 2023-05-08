@@ -7,6 +7,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,14 @@ import java.util.List;
 public class AppUserController {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     AppUserService appUserService;
 
     @PostMapping("/admin")
     public ResponseEntity<?> addUserAdminRole(@RequestBody AppUser appUser){
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser = appUserService.insertUser(appUser);
         return new ResponseEntity<>(new ResponseModel(
                 HttpStatus.OK.value(),
