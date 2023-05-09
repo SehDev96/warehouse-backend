@@ -1,6 +1,7 @@
 package com.backend.warehousebackend.controller;
 
 import com.backend.warehousebackend.entity.AppUser;
+import com.backend.warehousebackend.model.ErrorResponseModel;
 import com.backend.warehousebackend.model.ResponseModel;
 import com.backend.warehousebackend.service.AppUserService;
 import org.apache.coyote.Response;
@@ -22,8 +23,15 @@ public class AppUserController {
     @Autowired
     AppUserService appUserService;
 
-    @PostMapping("/admin")
+    @PostMapping("/add")
     public ResponseEntity<?> addUserAdminRole(@RequestBody AppUser appUser){
+        if(appUser.getPassword().isBlank() || appUser.getUsername().isBlank() || appUser.getRole().isBlank()){
+            return new ResponseEntity<>(new ErrorResponseModel(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad request",
+                    "Incomplete details"
+            ),HttpStatus.BAD_REQUEST);
+        }
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser = appUserService.insertUser(appUser);
         return new ResponseEntity<>(new ResponseModel(
