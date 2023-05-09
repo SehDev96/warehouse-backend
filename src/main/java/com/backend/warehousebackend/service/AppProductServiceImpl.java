@@ -86,4 +86,9 @@ public class AppProductServiceImpl implements AppProductService{
     public int searchProductCount(String key) {
         return appProductRepository.searchProductsCount(key).orElse(null);
     }
+
+    @Override
+    public List<UUID> getProductIdListBySku(String keyword) {
+        return appProductRepository.searchProductIdBySku(keyword);
+    }
 }

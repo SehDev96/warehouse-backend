@@ -21,4 +21,6 @@ public interface AppWarehouseService {
 
     List<String> getAllWarehouseCodes();
 
+    List<UUID> getWarehouseIdListByCode(String keyword);
+
 }

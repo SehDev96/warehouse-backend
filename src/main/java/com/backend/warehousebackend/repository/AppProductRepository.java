@@ -1,5 +1,6 @@
 package com.backend.warehousebackend.repository;
 
+import com.backend.warehousebackend.entity.AppOutboundTransaction;
 import com.backend.warehousebackend.entity.AppProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,4 +31,11 @@ public interface AppProductRepository extends JpaRepository<AppProduct, UUID> {
     Page<AppProduct> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Optional<AppProduct> findBySku(String sku);
+
+    @Query("select p.sku from AppProduct p where p.id = :id")
+    Optional<String> findSkuById(UUID id);
+
+    @Query("SELECT e.id FROM AppProduct e WHERE LOWER(e.sku) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<UUID> searchProductIdBySku(@Param("keyword") String keyword);
+
 }

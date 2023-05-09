@@ -5,6 +5,9 @@ import com.backend.warehousebackend.repository.AppDestinationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class AppDestinationServiceImpl implements AppDestinationService{
 
@@ -19,5 +22,10 @@ public class AppDestinationServiceImpl implements AppDestinationService{
     @Override
     public AppDestination insertDestination(AppDestination appDestination) {
         return appDestinationRepository.save(appDestination);
+    }
+
+    @Override
+    public List<UUID> getDestinationIdListByName(String keyword) {
+        return appDestinationRepository.searchDestinationIdByName(keyword);
     }
 }

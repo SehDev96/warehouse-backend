@@ -50,4 +50,9 @@ public class AppWarehouseServiceImpl implements AppWarehouseService{
     public List<String> getAllWarehouseCodes() {
         return appWarehouseRepository.findAllCodes();
     }
+
+    @Override
+    public List<UUID> getWarehouseIdListByCode(String keyword) {
+        return appWarehouseRepository.searchWarehouseIdByCode(keyword);
+    }
 }

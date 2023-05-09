@@ -26,4 +26,6 @@ public interface AppProductService {
     int searchProductCount(String key);
 
     int getNumberOfProducts();
+
+    List<UUID> getProductIdListBySku(String keyword);
 }
