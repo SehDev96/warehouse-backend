@@ -40,7 +40,7 @@ public class AppProductServiceImpl implements AppProductService{
         if (q == null) {
             appProductPage = appProductRepository.findAll(pageable);
         } else {
-            appProductPage = appProductRepository.findAllByNameContainingIgnoreCase(q, pageable);
+            appProductPage = appProductRepository.findAllContainingIgnoreCase(q, pageable);
         }
 
         assert appProductPage != null;

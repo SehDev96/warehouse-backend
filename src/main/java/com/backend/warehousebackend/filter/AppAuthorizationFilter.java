@@ -29,7 +29,6 @@ public class AppAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println(request.getServletPath());
         if(request.getServletPath().equals("/app/authenticate") || request.getServletPath().equals("/app/auth/refresh-token")){
             filterChain.doFilter(request,response);
         } else {

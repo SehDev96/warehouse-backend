@@ -30,6 +30,10 @@ public interface AppProductRepository extends JpaRepository<AppProduct, UUID> {
 
     Page<AppProduct> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
+    @Query("SELECT p FROM AppProduct p WHERE lower(p.sku) LIKE %:keyword% OR lower(p.name) LIKE %:keyword% OR lower(p.description) LIKE %:keyword%")
+    Page<AppProduct> findAllContainingIgnoreCase(@Param("keyword") String keyword, Pageable pageable);
+
+
     Optional<AppProduct> findBySku(String sku);
 
     @Query("select p.sku from AppProduct p where p.id = :id")
