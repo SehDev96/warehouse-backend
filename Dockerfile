@@ -9,6 +9,6 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:17-oracle
 WORKDIR /app
-COPY --from=MAVEN_BUILD /build/target/java-backend-version.jar /app/application.jar
+COPY --from=MAVEN_BUILD /build/target/warehouse-backend-0.0.1-SNAPSHOT.jar /app/application.jar
 EXPOSE 5000
 ENTRYPOINT ["java","-jar","/app/application.jar"]
